@@ -19,13 +19,27 @@ export const Login = () => {
 
   const checkUserRole = async () => {
     try {
-      const { data: profile, error } = await supabase
+      // First check if profile exists, if not create one
+      const { data: profile, error: fetchError } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single();
 
-      if (error) throw error;
+      if (fetchError && fetchError.code === 'PGRST116') {
+        // Profile doesn't exist, create one
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert([
+            { id: user.id, role: 'user' }
+          ]);
+        
+        if (insertError) throw insertError;
+        navigate('/'); // New users are regular users by default
+        return;
+      }
+
+      if (fetchError) throw fetchError;
 
       if (profile?.role === 'admin') {
         navigate('/admin');
@@ -52,6 +66,9 @@ export const Login = () => {
       if (error) throw error;
 
       // Role check will happen in useEffect when user is set
+      if (data.user) {
+        checkUserRole(data.user); // Pass the user object to checkUserRole
+      }
       
     } catch (error) {
       setError(error.message);

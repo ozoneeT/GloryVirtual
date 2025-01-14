@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import { SignUp } from './components/SignUp';
+import { AdminRoute } from './components/AdminRoute';
 
 // Component to handle auth-based redirects
 const Root = () => {
@@ -60,9 +61,9 @@ function App() {
           } />
           
           <Route path="/admin" element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Admin />
-            </ProtectedRoute>
+            </AdminRoute>
           } />
 
           <Route path="/signup" element={<SignUp />} />

@@ -2,6 +2,7 @@ import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { LogoutButton } from './LogoutButton';
+import { useAuth } from '../context/AuthContext';
 
 
 const pictures = [
@@ -45,6 +46,7 @@ pages.push({
 export const UI = () => {
   const [page, setPage] = useAtom(pageAtom);
   const navigate = useNavigate();
+  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     const audio = new Audio("/audios/page-flip-01a.mp3");
@@ -58,14 +60,46 @@ export const UI = () => {
     <>
       <div className="fixed top-0 left-0 right-0 z-10 p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <main  className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col">
+          <main  className=" select-none z-10 fixed  inset-0  flex justify-between flex-col">
          
-          <div className="w-full flex justify-end mt-1">
+  
+
+      {/* Admin Dashboard Button - Only visible to admins */}
+      {user.email === "admin@gmail.com" && (
+        <button
+          onClick={() => navigate('/admin')}
+          className="fixed bottom-8 right-8 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
+        >
+          <svg 
+            className="w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          <span>Admin Dashboard</span>
+        </button>
+      )}
+
+
+          <div className="w-full flex justify-end mt-1 p-10">
               <button
                 className="pointer-events-auto border-transparent hover:border-white transition-all duration-300 px-4 py-3 rounded-full text-lg uppercase shrink-0 border bg-black/30 text-white"
                 onClick={() => navigate('/explore')}
               >
-                Explore More Books
+                Explore Books
               </button>
             </div>
             

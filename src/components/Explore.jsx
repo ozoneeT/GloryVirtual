@@ -87,7 +87,7 @@ export const Explore = () => {
                   <div className="bg-white/10 rounded-lg p-6 hover:bg-white/20 transition-all duration-300">
                     <div className="aspect-[3/4] mb-4 overflow-hidden rounded-lg">
                       <img
-                        src={book.cover_url || '/placeholder-cover.jpg'}
+                        src={book.cover_image || '/placeholder-cover.jpg'}
                         alt={book.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
