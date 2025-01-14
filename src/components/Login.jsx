@@ -78,7 +78,11 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#5a47ce] to-[#232323] flex items-center justify-center p-4">
+    <div className="login-background min-h-screen bg-gradient-to-r from-[#5a47ce] to-[#232323] flex items-center justify-center p-4 style={{
+        backgroundImage: `url(${library})`, // Replace with your image path
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: adds a dark overlay
+        backgroundBlend: 'overlay'
+      }}" >
       <div className="max-w-md w-full bg-white/10 rounded-lg p-8 backdrop-blur-sm">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Login</h2>
         

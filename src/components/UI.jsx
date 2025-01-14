@@ -59,8 +59,8 @@ export const UI = () => {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-10 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <main  className=" select-none z-10 fixed  inset-0  flex justify-between flex-col">
+        <div className=" container mx-auto flex justify-between items-center">
+        <main className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col">
          
   
 
@@ -68,7 +68,7 @@ export const UI = () => {
       {user.email === "admin@gmail.com" && (
         <button
           onClick={() => navigate('/admin')}
-          className="fixed bottom-8 right-8 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
+          className="pointer-events-auto fixed bottom-8 right-8 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
         >
           <svg 
             className="w-5 h-5" 
@@ -113,7 +113,7 @@ export const UI = () => {
             </div> */}
               
           
-            <div className="w-full overflow-auto pointer-events-auto flex justify-center">
+            <div className=" w-full overflow-auto pointer-events-auto flex justify-center">
               <div className="overflow-auto flex items-center gap-4 max-w-full p-5">
                 {[...pages].map((_, index) => (
                   <button

@@ -12,7 +12,9 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import { SignUp } from './components/SignUp';
 import { AdminRoute } from './components/AdminRoute';
-
+import BookView from './components/BookView';
+import LocalBookView from './components/LocalBookView';
+import PDFReader from './components/PDFReader';
 // Component to handle auth-based redirects
 const Root = () => {
   const { user } = useAuth();
@@ -59,6 +61,9 @@ function App() {
               <Explore />
             </ProtectedRoute>
           } />
+          <Route path="/book/:id" element={<BookView />} />
+          <Route path="/book/local/:id" element={<LocalBookView />} />
+          <Route path="/read/:id" element={<PDFReader />} />
           
           <Route path="/admin" element={
             <AdminRoute>
@@ -67,6 +72,7 @@ function App() {
           } />
 
           <Route path="/signup" element={<SignUp />} />
+ 
 
           {/* Catch all route */}
           <Route path="*" element={<Navigate to="/" replace />} />

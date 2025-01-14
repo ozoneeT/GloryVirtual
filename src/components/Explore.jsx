@@ -70,7 +70,7 @@ export const Explore = () => {
           <h1 className="text-3xl font-bold text-white">Explore Books</h1>
           <LogoutButton />
         </div>
-
+        
         {/* Available Books Section */}
         <section className="mb-16">
           <h2 className="text-white text-3xl font-bold mb-8">Available Books</h2>
@@ -85,7 +85,7 @@ export const Explore = () => {
                   className="group"
                 >
                   <div className="bg-white/10 rounded-lg p-6 hover:bg-white/20 transition-all duration-300">
-                    <div className="aspect-[3/4] mb-4 overflow-hidden rounded-lg">
+                    <div className="aspect-[4/3] mb-4 overflow-hidden rounded-lg">
                       <img
                         src={book.cover_image || '/placeholder-cover.jpg'}
                         alt={book.title}
