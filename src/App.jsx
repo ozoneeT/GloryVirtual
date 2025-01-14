@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Experience } from "./components/Experience";
 import { UI } from "./components/UI";
-import {Explore} from './components/explore';
+import {Explore} from './components/Explore';
 import { Login } from "./components/Login";
 import { Admin } from "./components/Admin";
 import { AuthProvider } from './context/AuthContext';
