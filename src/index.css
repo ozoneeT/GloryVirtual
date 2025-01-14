@@ -6,13 +6,32 @@
 #root {
   width: 100vw;
   height: 100vh;
+  overflow-y: auto; /* Add this to enable smooth scrolling */
+}
+.canvas{
   background: radial-gradient(#5a47ce, #232323 80%);
 }
-
+body {
+  margin: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+.explore-button{
+ z-index: 1000;
+}
 body {
   margin: 0;
 }
 
 .outline-text {
   -webkit-text-stroke: 1px white;
+}
+/* Add new styles for explore section */
+.explore {
+  min-height: 100vh; /* Full viewport height for explore section */
+  scroll-snap-align: start; /* Optional: For smooth scroll snapping */
+}
+
+/* Add smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
 }
