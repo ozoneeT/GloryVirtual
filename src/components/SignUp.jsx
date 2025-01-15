@@ -2,23 +2,20 @@ import { useState } from 'react';
 import { supabase } from '../supabase/config';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react';
 
 export const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [adminCode, setAdminCode] = useState('');
+  const [wantToBeAdmin, setWantToBeAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (user) {
-      navigate('/');
-    }
-  }, [user, navigate]);
+  // Admin code - you might want to store this in an environment variable
+  const ADMIN_SECRET_CODE = "iamadmin"; // Replace with your secret code
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -34,6 +31,12 @@ export const SignUp = () => {
       return;
     }
 
+    // Admin code validation
+    if (wantToBeAdmin && adminCode !== ADMIN_SECRET_CODE) {
+      setError("Invalid admin code");
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -43,7 +46,7 @@ export const SignUp = () => {
         password,
         options: {
           data: {
-            role: 'user' // Default role for new users
+            role: wantToBeAdmin && adminCode === ADMIN_SECRET_CODE ? 'admin' : 'user'
           }
         }
       });
@@ -51,6 +54,18 @@ export const SignUp = () => {
       if (error) throw error;
 
       if (data) {
+        // Create profile entry
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: data.user.id,
+              role: wantToBeAdmin && adminCode === ADMIN_SECRET_CODE ? 'admin' : 'user'
+            }
+          ]);
+
+        if (profileError) throw profileError;
+
         // Show success message
         alert('Check your email for the confirmation link!');
         navigate('/login');
@@ -116,6 +131,35 @@ export const SignUp = () => {
               required
             />
           </div>
+
+          <div className="flex items-center">
+            <input
+              id="adminCheckbox"
+              type="checkbox"
+              checked={wantToBeAdmin}
+              onChange={(e) => setWantToBeAdmin(e.target.checked)}
+              className="w-4 h-4 text-blue-600 rounded border-white/30 focus:ring-blue-500"
+            />
+            <label htmlFor="adminCheckbox" className="ml-2 text-white/70">
+              Sign up as Admin
+            </label>
+          </div>
+
+          {wantToBeAdmin && (
+            <div>
+              <label className="block text-white/70 mb-2" htmlFor="adminCode">
+                Admin Code
+              </label>
+              <input
+                id="adminCode"
+                type="password"
+                value={adminCode}
+                onChange={(e) => setAdminCode(e.target.value)}
+                className="w-full px-4 py-3 rounded bg-white/5 border border-white/10 text-white focus:border-white/30 focus:outline-none"
+                required
+              />
+            </div>
+          )}
 
           <button
             type="submit"

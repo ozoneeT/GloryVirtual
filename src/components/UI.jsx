@@ -46,8 +46,8 @@ pages.push({
 export const UI = () => {
   const [page, setPage] = useAtom(pageAtom);
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
-
+  const { user } = useAuth();
+console.log(user)
   useEffect(() => {
     const audio = new Audio("/audios/page-flip-01a.mp3");
     audio.play();
@@ -65,7 +65,7 @@ export const UI = () => {
   
 
       {/* Admin Dashboard Button - Only visible to admins */}
-      {user.email === "admin@gmail.com" && (
+      {user?.user_metadata?.role === 'admin' && (
         <button
           onClick={() => navigate('/admin')}
           className="pointer-events-auto fixed bottom-8 right-8 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"

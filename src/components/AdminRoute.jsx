@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabase/config';
 
 export const AdminRoute = ({ children }) => {
   const { user } = useAuth();
@@ -9,27 +8,16 @@ export const AdminRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const checkAdminStatus = () => {
       if (!user) {
+        setIsAdmin(false);
         setLoading(false);
         return;
       }
 
-      try {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-        setIsAdmin(profile?.role === 'admin');
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        setIsAdmin(false);
-      } finally {
-        setLoading(false);
-      }
+      // Check admin status from user metadata
+      setIsAdmin(user.user_metadata?.role === 'admin');
+      setLoading(false);
     };
 
     checkAdminStatus();
