@@ -35,7 +35,7 @@ body {
 }
 /* src/styles.css or your main CSS file */
 .login-background {
-  background-image: url('../public/images/library.jpg');
+  background-image: url('../images/library.jpg');
   background-size: cover;
   background-position: center;
 }

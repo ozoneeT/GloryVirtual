@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase/config';
+import { useAuth } from '../context/AuthContext';
 
 export const Admin = () => {
   const [books, setBooks] = useState([]);
@@ -16,9 +17,17 @@ export const Admin = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState('');
   const [useImageUrl, setUseImageUrl] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchBooks();
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const fetchBooks = async () => {
@@ -30,6 +39,21 @@ export const Admin = () => {
       console.error('Error fetching books:', error);
     } else {
       setBooks(data);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_all_users');
+      
+      if (error) throw error;
+      setUsers(data || []);
+      const totalCount = data.length > 0 ? data[0].total_users : 0;
+      setTotalUsers(data.length);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      alert(error.message);
     }
   };
 
@@ -173,6 +197,24 @@ export const Admin = () => {
     }
   };
 
+  const handleRoleChange = async (userId, newRole) => {
+    try {
+      const { data, error } = await supabase
+        .rpc('update_user_role', {
+          target_user_id: userId,
+          new_role: newRole
+        });
+
+      if (error) throw error;
+      
+      // Refresh the users list
+      fetchUsers();
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      alert('Error updating user role. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -208,6 +250,10 @@ export const Admin = () => {
             <p className="text-3xl font-bold text-gray-900 mt-2">
               {books.filter(book => book.cover_image).length}
             </p>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-gray-500 text-sm font-medium">User</h3>
+            <p className="text-3xl font-bold text-gray-900 mt-2">{totalUsers}</p>
           </div>
         </div>
 
@@ -353,6 +399,57 @@ export const Admin = () => {
                 {uploading ? 'Adding Book...' : 'Add Book'}
               </button>
             </form>
+          </div>
+        </div>
+
+        {/* Users Management */}
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Manage Users</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {users.map((user) => (
+                    <tr key={user.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{user.email}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                          ${user.user_metadata?.role === 'admin' 
+                            ? 'bg-purple-100 text-purple-800' 
+                            : 'bg-green-100 text-green-800'}`}>
+                          {user.user_metadata?.role || 'user'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <select
+                          value={user.user_metadata?.role || 'user'}
+                          onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                        >
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

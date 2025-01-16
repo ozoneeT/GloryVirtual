@@ -71,6 +71,7 @@ export const Explore = () => {
           <LogoutButton />
         </div>
         
+        
         {/* Available Books Section */}
         <section className="mb-16">
           <h2 className="text-white text-3xl font-bold mb-8">Available Books</h2>
@@ -101,7 +102,12 @@ export const Explore = () => {
             </div>
           )}
         </section>
-
+        <Link to="/request-book">
+          <button className="bg-blue-600 text-white mb-10 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+            Request Book
+          </button>
+        </Link>
+       
         {/* Search Section */}
         <section>
           <h2 className="text-white text-3xl font-bold mb-8">Search More Books</h2>
@@ -167,6 +173,8 @@ export const Explore = () => {
             </div>
           )}
         </section>
+
+      
       </div>
     </div>
   );

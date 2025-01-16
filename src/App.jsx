@@ -15,6 +15,11 @@ import { AdminRoute } from './components/AdminRoute';
 import BookView from './components/BookView';
 import LocalBookView from './components/LocalBookView';
 import PDFReader from './components/PDFReader';
+import { ProfileScreen } from './components/ProfileScreen';
+import ForgotPassword from './components/ForgotPassword'; 
+import ContactAdmin from './components/ContactAdmin'; 
+import RequestBook from './components/RequestBook';
+
 // Component to handle auth-based redirects
 const Root = () => {
   const { user } = useAuth();
@@ -64,6 +69,7 @@ function App() {
           <Route path="/book/:id" element={<BookView />} />
           <Route path="/book/local/:id" element={<LocalBookView />} />
           <Route path="/read/:id" element={<PDFReader />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           
           <Route path="/admin" element={
             <AdminRoute>
@@ -72,7 +78,9 @@ function App() {
           } />
 
           <Route path="/signup" element={<SignUp />} />
- 
+          <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/contact-admin" element={<ContactAdmin />} />
+          <Route path="/request-book" element={<RequestBook />} />
 
           {/* Catch all route */}
           <Route path="*" element={<Navigate to="/" replace />} />

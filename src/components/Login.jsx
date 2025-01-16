@@ -65,7 +65,7 @@ export const Login = () => {
 
       if (error) throw error;
 
-      // Role check will happen in useEffect when user is set
+      // Role check will happen
       if (data.user) {
         checkUserRole(data.user); // Pass the user object to checkUserRole
       }
@@ -136,6 +136,15 @@ export const Login = () => {
               className="text-white hover:text-white/80 transition-colors"
             >
               Sign up
+            </Link>
+          </p>
+
+          <p className="text-white/50 text-center text-sm mt-4">
+            <Link 
+              to="/forgot-password" 
+              className="text-white hover:text-white/80 transition-colors"
+            >
+              Forgot Password?
             </Link>
           </p>
         </form>

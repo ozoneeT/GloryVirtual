@@ -14,8 +14,8 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Admin code - you might want to store this in an environment variable
-  const ADMIN_SECRET_CODE = "iamadmin"; // Replace with your secret code
+  
+  const ADMIN_SECRET_CODE = "iamadmin";
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -79,7 +79,7 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#5a47ce] to-[#232323] flex items-center justify-center p-4">
+    <div className="login-background min-h-screen bg-gradient-to-r from-[#5a47ce] to-[#232323] flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white/10 rounded-lg p-8 backdrop-blur-sm">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Create Account</h2>
         
